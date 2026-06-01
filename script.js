@@ -1,4 +1,4 @@
-const questions = Array.isArray(window.quizQuestions) ? window.quizQuestions : [];
+const sourceQuestions = Array.isArray(window.quizQuestions) ? window.quizQuestions : [];
 
 const startScreen = document.querySelector("#start-screen");
 const quizScreen = document.querySelector("#quiz-screen");
@@ -23,17 +23,19 @@ const resultScore = document.querySelector("#result-score");
 const resultMessage = document.querySelector("#result-message");
 const reviewList = document.querySelector("#review-list");
 
+let sessionQuestions = [];
 let currentIndex = 0;
 let selectedIndex = null;
 let score = 0;
 let hasSubmitted = false;
 let attempts = [];
+let optionStates = [];
 
 function initialise() {
-  questionTotal.textContent = String(questions.length);
+  questionTotal.textContent = String(sourceQuestions.length);
   liveScore.textContent = "0";
 
-  if (questions.length === 0) {
+  if (sourceQuestions.length === 0) {
     startScreen.innerHTML = `
       <h2>No questions found</h2>
       <p class="muted">Add at least one question to <code>questions.js</code>, then refresh this page.</p>
@@ -55,6 +57,17 @@ function startQuiz() {
   hasSubmitted = false;
   attempts = [];
 
+  sessionQuestions = shuffle(sourceQuestions).map((question) => ({
+    ...question,
+    shuffledOptions: shuffle(
+      question.options.map((text, originalIndex) => ({
+        text,
+        originalIndex,
+        isCorrect: originalIndex === question.answer,
+      }))
+    ),
+  }));
+
   startScreen.classList.add("hidden");
   resultScreen.classList.add("hidden");
   quizScreen.classList.remove("hidden");
@@ -63,14 +76,15 @@ function startQuiz() {
 }
 
 function renderQuestion() {
-  const currentQuestion = questions[currentIndex];
+  const currentQuestion = sessionQuestions[currentIndex];
 
   selectedIndex = null;
   hasSubmitted = false;
+  optionStates = currentQuestion.shuffledOptions.map(() => ({ crossed: false, highlighted: false }));
 
-  progressText.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+  progressText.textContent = `Question ${currentIndex + 1} of ${sessionQuestions.length}`;
   topicText.textContent = currentQuestion.topic || "";
-  progressFill.style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+  progressFill.style.width = `${((currentIndex + 1) / sessionQuestions.length) * 100}%`;
   questionText.textContent = currentQuestion.question;
   feedback.classList.add("hidden");
   feedback.innerHTML = "";
@@ -78,25 +92,48 @@ function renderQuestion() {
   submitButton.disabled = true;
   submitButton.classList.remove("hidden");
   nextButton.classList.add("hidden");
-  nextButton.textContent = currentIndex === questions.length - 1 ? "Show result" : "Next question";
+  nextButton.textContent = currentIndex === sessionQuestions.length - 1 ? "Show result" : "Next question";
   liveScore.textContent = String(score);
 
   options.innerHTML = "";
 
-  currentQuestion.options.forEach((option, index) => {
+  currentQuestion.shuffledOptions.forEach((option, index) => {
+    const optionRow = document.createElement("div");
+    optionRow.className = "option-row";
+    optionRow.dataset.index = String(index);
+
     const optionButton = document.createElement("button");
     optionButton.type = "button";
-    optionButton.className = "option-button";
+    optionButton.className = "option-select";
     optionButton.setAttribute("role", "radio");
     optionButton.setAttribute("aria-checked", "false");
     optionButton.dataset.index = String(index);
-    optionButton.innerHTML = `
-      <span class="option-letter">${String.fromCharCode(65 + index)}</span>
-      <span class="option-text">${escapeHtml(option)}</span>
-    `;
-
+    optionButton.innerHTML = `<span class="option-text">${escapeHtml(option.text)}</span>`;
     optionButton.addEventListener("click", () => selectOption(index));
-    options.appendChild(optionButton);
+
+    const actions = document.createElement("div");
+    actions.className = "option-actions";
+    actions.setAttribute("aria-label", "Option tools");
+
+    const crossButton = document.createElement("button");
+    crossButton.type = "button";
+    crossButton.className = "option-tool cross";
+    crossButton.textContent = "×";
+    crossButton.title = "Cross out option";
+    crossButton.setAttribute("aria-label", "Cross out option");
+    crossButton.addEventListener("click", () => toggleCross(index));
+
+    const highlightButton = document.createElement("button");
+    highlightButton.type = "button";
+    highlightButton.className = "option-tool highlight";
+    highlightButton.textContent = "Mark";
+    highlightButton.title = "Highlight option";
+    highlightButton.setAttribute("aria-label", "Highlight option");
+    highlightButton.addEventListener("click", () => toggleHighlight(index));
+
+    actions.append(crossButton, highlightButton);
+    optionRow.append(optionButton, actions);
+    options.appendChild(optionRow);
   });
 }
 
@@ -106,37 +143,76 @@ function selectOption(index) {
   selectedIndex = index;
   submitButton.disabled = false;
 
-  document.querySelectorAll(".option-button").forEach((button) => {
+  document.querySelectorAll(".option-select").forEach((button) => {
     button.setAttribute("aria-checked", button.dataset.index === String(index) ? "true" : "false");
   });
+}
+
+function toggleCross(index) {
+  if (hasSubmitted) return;
+
+  optionStates[index].crossed = !optionStates[index].crossed;
+  updateOptionStateClasses(index);
+}
+
+function toggleHighlight(index) {
+  if (hasSubmitted) return;
+
+  optionStates[index].highlighted = !optionStates[index].highlighted;
+  updateOptionStateClasses(index);
+}
+
+function updateOptionStateClasses(index) {
+  const row = options.querySelector(`.option-row[data-index="${index}"]`);
+  if (!row) return;
+
+  const crossButton = row.querySelector(".option-tool.cross");
+  const highlightButton = row.querySelector(".option-tool.highlight");
+
+  row.classList.toggle("crossed", optionStates[index].crossed);
+  row.classList.toggle("highlighted", optionStates[index].highlighted);
+  crossButton.classList.toggle("active", optionStates[index].crossed);
+  crossButton.setAttribute("aria-pressed", String(optionStates[index].crossed));
+  highlightButton.classList.toggle("active", optionStates[index].highlighted);
+  highlightButton.setAttribute("aria-pressed", String(optionStates[index].highlighted));
 }
 
 function submitAnswer() {
   if (selectedIndex === null || hasSubmitted) return;
 
-  const currentQuestion = questions[currentIndex];
-  const isCorrect = selectedIndex === currentQuestion.answer;
+  const currentQuestion = sessionQuestions[currentIndex];
+  const selectedOption = currentQuestion.shuffledOptions[selectedIndex];
+  const correctDisplayIndex = currentQuestion.shuffledOptions.findIndex((option) => option.isCorrect);
+  const correctOption = currentQuestion.shuffledOptions[correctDisplayIndex];
+  const isCorrect = selectedOption?.isCorrect === true;
+
   hasSubmitted = true;
 
   if (isCorrect) score += 1;
 
   attempts.push({
     question: currentQuestion.question,
-    selected: selectedIndex,
-    correct: currentQuestion.answer,
+    selectedText: selectedOption?.text || "No answer selected",
+    correctText: correctOption?.text || "Unknown",
     isCorrect,
   });
 
-  document.querySelectorAll(".option-button").forEach((button) => {
-    const buttonIndex = Number(button.dataset.index);
-    button.disabled = true;
+  document.querySelectorAll(".option-row").forEach((row) => {
+    const rowIndex = Number(row.dataset.index);
+    const selectButton = row.querySelector(".option-select");
+    const toolButtons = row.querySelectorAll(".option-tool");
 
-    if (buttonIndex === currentQuestion.answer) {
-      button.classList.add("correct");
+    selectButton.disabled = true;
+    toolButtons.forEach((button) => {
+      button.disabled = true;
+    });
+
+    if (rowIndex === correctDisplayIndex) {
+      row.classList.add("correct");
     }
 
-    if (buttonIndex === selectedIndex && !isCorrect) {
-      button.classList.add("incorrect");
+    if (rowIndex === selectedIndex && !isCorrect) {
+      row.classList.add("incorrect");
     }
   });
 
@@ -152,7 +228,7 @@ function submitAnswer() {
 }
 
 function goToNextQuestion() {
-  if (currentIndex < questions.length - 1) {
+  if (currentIndex < sessionQuestions.length - 1) {
     currentIndex += 1;
     renderQuestion();
     return;
@@ -165,30 +241,35 @@ function showResults() {
   quizScreen.classList.add("hidden");
   resultScreen.classList.remove("hidden");
 
-  const percentage = Math.round((score / questions.length) * 100);
+  const percentage = Math.round((score / sessionQuestions.length) * 100);
 
   resultTitle.textContent = percentage >= 80 ? "Strong performance" : percentage >= 50 ? "Good attempt" : "Needs review";
-  resultScore.textContent = `${score}/${questions.length}`;
+  resultScore.textContent = `${score}/${sessionQuestions.length}`;
   resultMessage.textContent = `${percentage}% correct. Review any missed questions below, then repeat the quiz.`;
 
-  reviewList.innerHTML = attempts.map((attempt, index) => {
-    const question = questions[index];
-    const selectedText = question.options[attempt.selected] || "No answer selected";
-    const correctText = question.options[attempt.correct] || "Unknown";
-
-    return `
-      <article class="review-item">
-        <p class="status">${attempt.isCorrect ? "Correct" : "Incorrect"}</p>
-        <p><strong>Q${index + 1}.</strong> ${escapeHtml(attempt.question)}</p>
-        <p class="muted">Your answer: ${escapeHtml(selectedText)}</p>
-        ${attempt.isCorrect ? "" : `<p class="muted">Correct answer: ${escapeHtml(correctText)}</p>`}
-      </article>
-    `;
-  }).join("");
+  reviewList.innerHTML = attempts.map((attempt, index) => `
+    <article class="review-item">
+      <p class="status">${attempt.isCorrect ? "Correct" : "Incorrect"}</p>
+      <p><strong>Question ${index + 1}.</strong> ${escapeHtml(attempt.question)}</p>
+      <p class="muted">Your answer: ${escapeHtml(attempt.selectedText)}</p>
+      ${attempt.isCorrect ? "" : `<p class="muted">Correct answer: ${escapeHtml(attempt.correctText)}</p>`}
+    </article>
+  `).join("");
 }
 
 function restartQuiz() {
   startQuiz();
+}
+
+function shuffle(items) {
+  const copy = [...items];
+
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+  }
+
+  return copy;
 }
 
 function escapeHtml(value) {
