@@ -56,13 +56,7 @@ input {
 }
 
 .quiz-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px 22px;
-  border-bottom: 1px solid var(--border);
-  background: #fbfaf8;
+  display: none;
 }
 
 .eyebrow {
@@ -356,13 +350,8 @@ code {
     padding: 8px;
   }
 
-  .quiz-header,
   .screen {
     padding: 16px;
-  }
-
-  .quiz-header {
-    flex-direction: column;
   }
 
   .score-pill {
