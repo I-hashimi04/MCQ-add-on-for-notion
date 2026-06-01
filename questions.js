@@ -6,7 +6,8 @@ window.quizQuestions = [
       "Caudate nucleus",
       "Putamen",
       "Globus pallidus internus",
-      "Subthalamic nucleus"
+      "Subthalamic nucleus",
+      "Nucleus accumbens"
     ],
     answer: 2,
     explanation: "The globus pallidus internus is one of the main basal ganglia output nuclei. It projects to the thalamus and helps regulate movement."
@@ -18,7 +19,8 @@ window.quizQuestions = [
       "Lower motor neurone signs only",
       "Upper motor neurone signs",
       "Pure sensory loss without weakness",
-      "Isolated cerebellar ataxia"
+      "Isolated cerebellar ataxia",
+      "Myopathic weakness with preserved reflexes"
     ],
     answer: 1,
     explanation: "Corticospinal tract damage classically causes upper motor neurone signs below the lesion, including weakness, hyperreflexia and increased tone."
@@ -30,7 +32,8 @@ window.quizQuestions = [
       "Dopamine",
       "Serotonin",
       "Acetylcholine",
-      "Glutamate"
+      "Glutamate",
+      "Noradrenaline"
     ],
     answer: 0,
     explanation: "Parkinson's disease involves degeneration of dopaminergic neurones in the substantia nigra pars compacta."
@@ -42,7 +45,8 @@ window.quizQuestions = [
       "Lower motor neurone",
       "Neuromuscular junction",
       "Upper motor neurone pathway",
-      "Muscle fibre membrane"
+      "Muscle fibre membrane",
+      "Peripheral sensory receptor only"
     ],
     answer: 2,
     explanation: "Hyperreflexia is an upper motor neurone sign, usually due to reduced descending inhibitory control over spinal reflex circuits."
