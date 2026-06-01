@@ -37,6 +37,7 @@
         </div>
 
         <h2 id="question-text" class="question-text"></h2>
+        <p id="lead-in-text" class="lead-in-text"></p>
 
         <div class="question-tools" aria-label="Question tools">
           <span class="tool-hint">Use the small controls on each option to cross out or highlight without selecting it.</span>
@@ -58,6 +59,43 @@
         <h2 id="result-title">Result</h2>
         <p id="result-score" class="result-score"></p>
         <p id="result-message" class="muted"></p>
+
+        <section class="breakdown-section" aria-labelledby="priority-heading">
+          <h3 id="priority-heading">Priority revision</h3>
+          <div id="priority-list" class="priority-list"></div>
+        </section>
+
+        <section class="breakdown-grid" aria-label="Performance breakdowns">
+          <div class="breakdown-card">
+            <h3>Topics</h3>
+            <div id="topic-breakdown" class="breakdown-list"></div>
+          </div>
+          <div class="breakdown-card">
+            <h3>Components</h3>
+            <div id="component-breakdown" class="breakdown-list"></div>
+          </div>
+          <div class="breakdown-card">
+            <h3>Module LOs</h3>
+            <div id="lo-breakdown" class="breakdown-list"></div>
+          </div>
+          <div class="breakdown-card">
+            <h3>Disciplines</h3>
+            <div id="discipline-breakdown" class="breakdown-list"></div>
+          </div>
+          <div class="breakdown-card">
+            <h3>Cognitive level</h3>
+            <div id="cognitive-breakdown" class="breakdown-list"></div>
+          </div>
+        </section>
+
+        <section class="notion-summary" aria-labelledby="notion-heading">
+          <div class="summary-header">
+            <h3 id="notion-heading">Copyable Notion summary</h3>
+            <button id="copy-summary-button" class="button secondary" type="button">Copy summary</button>
+          </div>
+          <textarea id="notion-summary-text" readonly></textarea>
+        </section>
+
         <div id="review-list" class="review-list"></div>
         <button id="try-again-button" class="button primary">Try again</button>
       </section>
