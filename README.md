@@ -1,6 +1,17 @@
 # MCQ add-on for Notion
 
-A lightweight multiple-choice quiz interface designed to be embedded inside a Notion page using GitHub Pages.
+A lightweight assessment-style multiple-choice quiz interface designed to be embedded inside a Notion page using GitHub Pages.
+
+## Current features
+
+- Five answer options per question.
+- No A/B/C/D/E labels shown beside options.
+- Answer options are shuffled each time a quiz session starts.
+- Question order is shuffled each time a quiz session starts.
+- Each option has a cross-out control for eliminating unlikely answers.
+- Each option has a highlight control for marking answers to reconsider.
+- Immediate correct/incorrect feedback after submission.
+- End-of-session score and review.
 
 ## Files
 
@@ -20,22 +31,26 @@ Example:
   topic: "Topic name",
   question: "Your question here?",
   options: [
-    "Option A",
-    "Option B",
-    "Option C",
-    "Option D"
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4",
+    "Option 5"
   ],
   answer: 2,
   explanation: "This explanation appears after the user submits an answer."
 }
 ```
 
-The `answer` value uses zero-based numbering:
+The `answer` value uses zero-based numbering based on the order written in `questions.js`:
 
-- `0` = A
-- `1` = B
-- `2` = C
-- `3` = D
+- `0` = first option
+- `1` = second option
+- `2` = third option
+- `3` = fourth option
+- `4` = fifth option
+
+The displayed order changes during practice, but the app still tracks the correct answer internally.
 
 ## Publishing with GitHub Pages
 
