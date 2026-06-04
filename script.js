@@ -1,5 +1,56 @@
-const sourceQuestions = Array.isArray(window.quizQuestions) ? window.quizQuestions : [];
+const BANK_CONFIGS = [
+  { id: "elc1", title: "ELC1 — Endocrine foundations and axes", shortTitle: "ELC1" },
+  { id: "elc2", title: "ELC2 — Thyroid, adrenal, calcium and diabetes", shortTitle: "ELC2" },
+  { id: "elc3", title: "ELC3 — Reproductive anatomy and physiology", shortTitle: "ELC3" },
+  { id: "elc4", title: "ELC4 — Pregnancy, placenta, labour and neonates", shortTitle: "ELC4" },
+  { id: "elc5", title: "ELC5 — Reproductive pathology, STI, cancer, screening and communication", shortTitle: "ELC5" },
+];
 
+const loadedBanks = window.quizBanks || {};
+if (Array.isArray(window.quizQuestions) && !loadedBanks.legacy) {
+  loadedBanks.legacy = {
+    id: "legacy",
+    title: "Legacy MCQ Practice",
+    shortTitle: "Legacy",
+    description: "Original single-file question bank.",
+    questions: window.quizQuestions,
+  };
+}
+
+const configuredBanks = BANK_CONFIGS.map((config) => {
+  const loaded = loadedBanks[config.id] || {};
+  return {
+    ...config,
+    ...loaded,
+    id: config.id,
+    title: loaded.title || config.title,
+    shortTitle: loaded.shortTitle || config.shortTitle,
+    description: loaded.description || "Assessment-style ELC question set.",
+    questions: Array.isArray(loaded.questions) ? loaded.questions : [],
+  };
+});
+
+const mixedBank = {
+  id: "mixed",
+  title: "ELC Mixed — Paper 2-style practice",
+  shortTitle: "Mixed",
+  description: "A mixed set sampled from all available ELC banks.",
+  questions: configuredBanks.flatMap((bank) =>
+    bank.questions.map((question) => ({
+      ...question,
+      sourceBank: bank.shortTitle || bank.id,
+    }))
+  ),
+};
+
+const allBanks = [...configuredBanks, mixedBank];
+const banksById = new Map(allBanks.map((bank) => [bank.id, bank]));
+const queryParams = new URLSearchParams(window.location.search);
+const requestedBankId = (queryParams.get("set") || "elc1").toLowerCase();
+const currentBank = banksById.get(requestedBankId) || banksById.get("elc1") || mixedBank;
+const sourceQuestions = Array.isArray(currentBank.questions) ? currentBank.questions : [];
+
+const appTitle = document.querySelector("#app-title");
 const startScreen = document.querySelector("#start-screen");
 const quizScreen = document.querySelector("#quiz-screen");
 const resultScreen = document.querySelector("#result-screen");
@@ -41,13 +92,12 @@ let attempts = [];
 let optionStates = [];
 
 function initialise() {
+  document.title = `${currentBank.shortTitle || currentBank.title} MCQ Practice`;
+  if (appTitle) appTitle.textContent = currentBank.title;
+
   questionTotal.textContent = String(sourceQuestions.length);
   liveScore.textContent = "0";
-
-  if (sourceQuestions.length === 0) {
-    startScreen.innerHTML = `<h2>No questions found</h2><p class="muted">Add at least one question to <code>questions.js</code>, then refresh this page.</p>`;
-    return;
-  }
+  renderStartScreen();
 
   startButton.addEventListener("click", startQuiz);
   submitButton.addEventListener("click", submitAnswer);
@@ -55,9 +105,59 @@ function initialise() {
   restartButton.addEventListener("click", restartQuiz);
   tryAgainButton.addEventListener("click", restartQuiz);
   copySummaryButton.addEventListener("click", selectNotionSummary);
+
+  if (sourceQuestions.length === 0) {
+    startButton.disabled = true;
+    startButton.textContent = "No approved questions yet";
+  }
+}
+
+function renderStartScreen() {
+  const heading = startScreen.querySelector("h2");
+  const description = startScreen.querySelector("p.muted");
+  if (heading) heading.textContent = currentBank.title;
+  if (description) {
+    description.textContent = currentBank.description || "Start a focused ELC question set.";
+  }
+
+  const existing = startScreen.querySelector("#bank-selector");
+  if (existing) existing.remove();
+
+  const selector = document.createElement("section");
+  selector.id = "bank-selector";
+  selector.className = "bank-selector";
+  selector.setAttribute("aria-label", "Choose question bank");
+  selector.innerHTML = `
+    <h3>Choose a focused ELC set</h3>
+    <div class="bank-grid">
+      ${allBanks.map((bank) => renderBankLink(bank)).join("")}
+    </div>
+  `;
+  startButton.before(selector);
+}
+
+function renderBankLink(bank) {
+  const isCurrent = bank.id === currentBank.id;
+  const count = Array.isArray(bank.questions) ? bank.questions.length : 0;
+  const href = buildBankUrl(bank.id);
+  return `
+    <a class="bank-link ${isCurrent ? "active" : ""}" href="${escapeHtml(href)}" aria-current="${isCurrent ? "page" : "false"}">
+      <strong>${escapeHtml(bank.shortTitle || bank.title)}</strong>
+      <span>${escapeHtml(bank.description || bank.title)}</span>
+      <small>${count} question${count === 1 ? "" : "s"}</small>
+    </a>
+  `;
+}
+
+function buildBankUrl(bankId) {
+  const params = new URLSearchParams(window.location.search);
+  params.set("set", bankId);
+  return `${window.location.pathname}?${params.toString()}`;
 }
 
 function startQuiz() {
+  if (sourceQuestions.length === 0) return;
+
   currentIndex = 0;
   selectedIndex = null;
   score = 0;
@@ -66,7 +166,7 @@ function startQuiz() {
 
   sessionQuestions = shuffle(sourceQuestions).map((question) => ({
     ...question,
-    shuffledOptions: shuffle(question.options.map((text, originalIndex) => ({
+    shuffledOptions: shuffle(normaliseOptions(question).map((text, originalIndex) => ({
       text,
       originalIndex,
       isCorrect: originalIndex === question.answer,
@@ -86,7 +186,7 @@ function renderQuestion() {
   optionStates = currentQuestion.shuffledOptions.map(() => ({ crossed: false, highlighted: false }));
 
   progressText.textContent = `Question ${currentIndex + 1} of ${sessionQuestions.length}`;
-  topicText.textContent = currentQuestion.topic || "";
+  topicText.textContent = [currentQuestion.sourceBank, currentQuestion.topic].filter(Boolean).join(" · ");
   progressFill.style.width = `${((currentIndex + 1) / sessionQuestions.length) * 100}%`;
   questionText.textContent = currentQuestion.question || currentQuestion.stem || "";
   leadInText.textContent = currentQuestion.leadIn || "";
@@ -196,6 +296,8 @@ function submitAnswer() {
     sessionLOs: normaliseArray(currentQuestion.sessionLOs),
     disciplines: normaliseArray(currentQuestion.disciplines),
     cognitiveLevel: currentQuestion.cognitiveLevel || "Uncategorised",
+    assessmentSkill: currentQuestion.assessmentSkill || "Uncategorised",
+    sourceBank: currentQuestion.sourceBank || currentBank.shortTitle || currentBank.id,
     revisionAction: currentQuestion.revisionAction || "Review this component and redo related questions.",
   });
 
@@ -236,7 +338,7 @@ function showResults() {
 
   resultTitle.textContent = percentage >= 80 ? "Strong performance" : percentage >= 50 ? "Good attempt" : "Needs review";
   resultScore.textContent = `${score}/${sessionQuestions.length}`;
-  resultMessage.textContent = `${percentage}% correct. Use the breakdowns to identify which topics, LOs, disciplines and thinking levels need work.`;
+  resultMessage.textContent = `${percentage}% correct in ${currentBank.shortTitle || currentBank.title}. Use the breakdowns to identify which topics, components, LOs, disciplines and thinking levels need work.`;
 
   renderPriorities(priorities);
   renderBreakdown(topicBreakdown, breakdowns.topic);
@@ -253,7 +355,7 @@ function showResults() {
       ${attempt.leadIn ? `<p><strong>${escapeHtml(attempt.leadIn)}</strong></p>` : ""}
       <p class="muted">Your answer: ${escapeHtml(attempt.selectedText)}</p>
       ${attempt.isCorrect ? "" : `<p class="muted">Correct answer: ${escapeHtml(attempt.correctText)}</p>`}
-      <p class="muted">Component: ${escapeHtml(attempt.component)} · Cognitive level: ${escapeHtml(attempt.cognitiveLevel)}</p>
+      <p class="muted">Component: ${escapeHtml(attempt.component)} · Cognitive level: ${escapeHtml(attempt.cognitiveLevel)} · Skill: ${escapeHtml(attempt.assessmentSkill)}</p>
     </article>
   `).join("");
 }
@@ -265,6 +367,7 @@ function buildAllBreakdowns(items) {
     moduleLO: buildBreakdown(items, (item) => item.moduleLOs),
     discipline: buildBreakdown(items, (item) => item.disciplines),
     cognitiveLevel: buildBreakdown(items, (item) => [item.cognitiveLevel]),
+    assessmentSkill: buildBreakdown(items, (item) => [item.assessmentSkill]),
   };
 }
 
@@ -336,7 +439,8 @@ function buildNotionSummary(percentage, breakdowns, priorities) {
   const actions = uniqueValues(priorities.flatMap((item) => item.actions).filter(Boolean));
   return [
     `Date: ${date}`,
-    "Quiz: MCQ Practice",
+    `Quiz: ${currentBank.title}`,
+    `Question set: ${currentBank.id}`,
     `Overall score: ${score}/${sessionQuestions.length} (${percentage}%)`,
     "",
     "Needs work:",
@@ -345,14 +449,15 @@ function buildNotionSummary(percentage, breakdowns, priorities) {
     `- Module LOs: ${formatWeakList(breakdowns.moduleLO)}`,
     `- Disciplines: ${formatWeakList(breakdowns.discipline)}`,
     `- Cognitive levels: ${formatWeakList(breakdowns.cognitiveLevel)}`,
+    `- Assessment skills: ${formatWeakList(breakdowns.assessmentSkill)}`,
     "",
     "Next actions:",
     ...(actions.length ? actions.slice(0, 6).map((action) => `- ${action}`) : ["- Repeat this set later to check retention."]),
     "",
     "Reflection:",
     "- What made the missed questions difficult?",
-    "- Was the issue recall, mechanism, application, or interpretation?",
-    "- What resource should be reviewed before retesting?",
+    "- Was the issue recall, mechanism, application, interpretation, or drug safety?",
+    "- Which blueprint component should be reviewed before retesting?",
   ].join("\n");
 }
 
@@ -379,6 +484,10 @@ function shuffle(items) {
     [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
   }
   return copy;
+}
+
+function normaliseOptions(question) {
+  return Array.isArray(question.options) ? question.options : [];
 }
 
 function normaliseArray(value) {
