@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Notion MCQ Practice</title>
+  <title>ELC MCQ Practice</title>
   <meta name="description" content="A lightweight assessment-style MCQ interface designed to be embedded in Notion.">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -13,7 +13,7 @@
       <header class="quiz-header">
         <div>
           <p class="eyebrow">Assessment practice</p>
-          <h1 id="app-title">MCQ Practice</h1>
+          <h1 id="app-title">ELC MCQ Practice</h1>
         </div>
         <div class="score-pill" aria-live="polite">
           <span id="live-score">0</span>/<span id="question-total">0</span>
@@ -21,8 +21,8 @@
       </header>
 
       <section id="start-screen" class="screen">
-        <h2>Start a timed-style question set</h2>
-        <p class="muted">Five answer options are shown without letter labels. You can select an answer, cross out unlikely options, and highlight options you want to revisit.</p>
+        <h2>Start a focused ELC question set</h2>
+        <p class="muted">Choose an ELC set, then practise five-option single-best-answer questions with performance breakdowns by topic, component, LO, discipline and cognitive level.</p>
         <button id="start-button" class="button primary">Start practice</button>
       </section>
 
@@ -102,7 +102,11 @@
     </section>
   </main>
 
-  <script src="questions.js"></script>
+  <script src="question-banks/elc1.js"></script>
+  <script src="question-banks/elc2.js"></script>
+  <script src="question-banks/elc3.js"></script>
+  <script src="question-banks/elc4.js"></script>
+  <script src="question-banks/elc5.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
