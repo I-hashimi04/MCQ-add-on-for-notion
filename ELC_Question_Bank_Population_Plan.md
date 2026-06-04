@@ -62,7 +62,7 @@ Rules:
 - Include at least 4 management/drug-safety questions in ELC2, ELC4 and ELC5.
 - Include at least 4 anatomy/practical-localisation questions in ELC3.
 
-Expected total after Wave 1: at least 125 approved questions.
+Status: complete.
 
 ### Wave 2 — Assessment-angle deepening
 
@@ -76,7 +76,7 @@ Rules:
 - Add deliberate distractor variants based on common misconceptions.
 - Add practical-style questions for anatomy, images, hormone panels, graphs, screening tables and tumour markers.
 
-Expected total after Wave 2: 250–300 approved questions.
+Status: partial. Expansion files have been added for each bank with 15 new exam-ready-pass-1 questions per bank.
 
 ### Wave 3 — Integration and mixed-paper readiness
 
@@ -91,117 +91,20 @@ Rules:
 - Add screening/public health/communication items that are easy to under-revise.
 - Ensure each bank has enough apply/analyse questions.
 
-Expected total after Wave 3: 350–400 approved questions.
+Status: not started.
 
 ---
 
-## 4. Wave 1 detailed allocation
+## 4. Current tracking table
 
-### ELC1 — Endocrine foundations and axes
-
-Target: 25 questions.
-
-| Component family | Number | Main directions |
-|---|---:|---|
-| Hormone definition, binding, receptors, prohormones | 4 | definition, mechanism |
-| Feedback loops and primary/secondary/tertiary failure | 5 | axis logic, data interpretation |
-| Stimulation/suppression tests | 4 | data interpretation |
-| Anterior/posterior pituitary connections | 3 | mechanism, anatomical localisation |
-| Stalk effect, prolactin, prolactinoma | 3 | mechanism, clinical recognition, management |
-| GH/acromegaly | 2 | clinical recognition, management |
-| ADH/DI/SIADH | 4 | data interpretation, management |
-
-Cognitive mix target:
-
-- remember: 3
-- understand: 7
-- apply: 7
-- analyse: 8
-
-### ELC2 — Thyroid, adrenal, calcium and diabetes
-
-Target: 25 questions.
-
-| Component family | Number | Main directions |
-|---|---:|---|
-| Thyroid synthesis, TBG/free hormone, T4/T3 | 3 | mechanism, data interpretation |
-| Thyroid axis and TFT interpretation | 4 | axis logic, data interpretation |
-| Hyper/hypothyroidism treatment and pregnancy safety | 5 | clinical recognition, management, drug safety |
-| Thyroid anatomy and eye disease | 3 | anatomical localisation, clinical recognition |
-| Adrenal zones, Cushing, Addison, Conn, phaeochromocytoma | 6 | clinical recognition, data interpretation, management |
-| Calcium/PTH interpretation and management | 3 | data interpretation, management |
-| Insulin/metabolism/diabetes in pregnancy | 1 | mechanism, screening/management |
-
-Cognitive mix target:
-
-- remember: 3
-- understand: 5
-- apply: 9
-- analyse: 8
-
-### ELC3 — Reproductive anatomy and physiology
-
-Target: 25 questions.
-
-| Component family | Number | Main directions |
-|---|---:|---|
-| Male tract anatomy and function | 3 | practical identification, function |
-| Female pelvis, uterus, ovaries, broad ligament, pouches | 5 | anatomical localisation, practical identification |
-| Breast anatomy and lymphatics | 3 | practical identification, clinical application |
-| Perineum, pudendal nerve, episiotomy, ischioanal fossa | 5 | anatomical localisation, clinical application |
-| Puberty and HPG/HPT axes | 3 | axis logic, data interpretation |
-| Gametogenesis and fertilisation | 2 | developmental timing, mechanism |
-| Menstrual cycle/HPO axis | 2 | data interpretation |
-| Contraception/lactation/fertility | 2 | mechanism, management |
-
-Cognitive mix target:
-
-- remember: 5
-- understand: 7
-- apply: 9
-- analyse: 4
-
-### ELC4 — Pregnancy, placenta, labour and neonates
-
-Target: 25 questions.
-
-| Component family | Number | Main directions |
-|---|---:|---|
-| Placental development and spiral artery remodelling | 4 | mechanism, clinical recognition |
-| Fetal growth, IUGR/SGA/macrosomia, Dopplers | 4 | data interpretation, clinical recognition |
-| Maternal adaptations and pregnancy as stress test | 4 | mechanism, data interpretation, public health |
-| Labour mechanism and stages | 3 | mechanism, developmental timing |
-| PPH and labour pharmacology | 4 | management, drug safety |
-| Neonatal transition and prematurity | 4 | mechanism, clinical recognition |
-| Pregnancy infection/drugs/immunology | 2 | drug safety, management |
-
-Cognitive mix target:
-
-- remember: 2
-- understand: 6
-- apply: 11
-- analyse: 6
-
-### ELC5 — Reproductive pathology, STI, cancer, screening and communication
-
-Target: 25 questions.
-
-| Component family | Number | Main directions |
-|---|---:|---|
-| Amenorrhoea and PCOS | 4 | clinical recognition, data interpretation |
-| STI presentation, testing, treatment, co-screening | 5 | clinical recognition, management, public health |
-| Gynaecological pathology: endometriosis, fibroids, endometrial, ovarian, cervical | 6 | clinical recognition, investigation, management |
-| Fertility/subfertility | 2 | investigation, management |
-| Menopause and HRT | 3 | axis logic, management, drug safety |
-| Reproductive cancer and tumour markers | 2 | data interpretation, management |
-| Screening and communication/ageing/sexuality | 3 | public health, communication |
-
-Cognitive mix target:
-
-- remember: 2
-- understand: 5
-- apply: 11
-- analyse: 7
+| Bank | Base questions | Wave 2 added | Current approved | Strong bank target | Mature target | Next priority |
+|---|---:|---:|---:|---:|---:|---|
+| ELC1 | 25 | 15 | 40 | 50 | 70 | Add 10 more cross-axis/dynamic-test variants. |
+| ELC2 | 27 | 15 | 42 | 60 | 80 | Add 18 more endocrine hypertension, thyroid pregnancy and calcium/diabetes variants. |
+| ELC3 | 25 | 15 | 40 | 60 | 80 | Add 20 more anatomy/practical and reproductive-physiology variants. |
+| ELC4 | 25 | 15 | 40 | 60 | 80 | Add 20 more antenatal screening, Doppler, infection and neonatal variants. |
+| ELC5 | 25 | 15 | 40 | 60 | 80 | Add 20 more STI, gynae pathology, screening, oncology and communication variants. |
+| Mixed | 127 | 75 | 202 | n/a | n/a | Auto-samples from all loaded banks. |
 
 ---
 
@@ -213,7 +116,7 @@ For each batch:
 2. Create question planning headers first.
 3. Draft questions in a temporary section or local working file.
 4. Review each question against the approval checklist.
-5. Move approved questions into the relevant `question-banks/elc*.js` file.
+5. Move approved questions into the relevant `question-banks/elc*.js` file or a loaded expansion file.
 6. Keep `status: "approved"` only for items that pass review.
 7. After adding questions, check that the bank still loads and the mixed set can read it.
 
@@ -257,28 +160,12 @@ A question may be added only if:
 
 ---
 
-## 7. Tracking table
+## 7. Recommended next build order
 
-Update this table as banks are populated.
+Wave 2 is partially complete. Recommended next order:
 
-| Bank | Current approved | Wave 1 target | Wave 2 target | Mature target | Next priority |
-|---|---:|---:|---:|---:|---|
-| ELC1 | 25 | 25 | 50 | 70 | Wave 2: more thyroid-adrenal cross-axis links and deeper dynamic-test variants |
-| ELC2 | 27 | 25 | 60 | 80 | Wave 2: more endocrine hypertension, thyroid pregnancy, calcium management, diabetes pregnancy |
-| ELC3 | 25 | 25 | 60 | 80 | Wave 2: more anatomy/practical localisation, menstrual hormone graphs, fertility/lactation |
-| ELC4 | 25 | 25 | 60 | 80 | Wave 2: infection in pregnancy, neonatal complications, antenatal screening, Doppler/data variants |
-| ELC5 | 25 | 25 | 60 | 80 | Wave 2: more STI treatment nuance, cervical screening results, gynae pathology, cancer treatment |
-
-Wave 1 is complete across all five focused banks. Mixed practice now samples from a broad approved pool across all ELC sections.
-
----
-
-## 8. Recommended next build order
-
-Wave 1 is complete. Recommended Wave 2 order:
-
-1. ELC4 — deepen pregnancy/labour/neonatal integration and data interpretation.
-2. ELC2 — deepen high-yield endocrine data interpretation and drug safety.
-3. ELC5 — deepen pathology, STI, screening and cancer treatment variants.
-4. ELC1 — expand cross-axis and dynamic testing variants.
-5. ELC3 — expand practical-style anatomy and physiology graph variants.
+1. Add remaining Wave 2 questions to ELC4 and ELC2.
+2. Add remaining Wave 2 questions to ELC5 and ELC3.
+3. Add remaining Wave 2 questions to ELC1.
+4. Run final spot-check for over-cued stems and option-length clues.
+5. Only then start Wave 3 mixed integration expansion.
