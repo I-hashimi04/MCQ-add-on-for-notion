@@ -121,6 +121,53 @@ code {
   line-height: 1.6;
 }
 
+.bank-selector {
+  margin: 18px 0;
+}
+
+.bank-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.bank-link {
+  display: grid;
+  gap: 6px;
+  min-height: 132px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #faf9f7;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.4;
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+
+.bank-link:hover,
+.bank-link:focus-visible {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.bank-link.active {
+  border-color: var(--selected-border);
+  background: var(--selected-bg);
+  box-shadow: inset 0 0 0 1px var(--selected-border);
+}
+
+.bank-link span,
+.bank-link small {
+  color: var(--muted);
+}
+
+.bank-link small {
+  align-self: end;
+  font-weight: 800;
+}
+
 .progress-row {
   display: flex;
   justify-content: space-between;
@@ -258,7 +305,6 @@ textarea:focus-visible {
   background: #ffffff;
   color: var(--text);
   cursor: pointer;
-  font-weight: 800;
 }
 
 .option-tool:hover:not(:disabled),
@@ -460,6 +506,14 @@ textarea:focus-visible {
 
   .score-pill {
     align-self: flex-start;
+  }
+
+  .bank-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bank-link {
+    min-height: auto;
   }
 
   .option-row {
