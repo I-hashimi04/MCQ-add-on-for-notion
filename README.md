@@ -12,20 +12,47 @@ A lightweight assessment-style multiple-choice quiz interface designed to be emb
 - Each option has a highlight control for marking answers to reconsider.
 - Immediate correct/incorrect feedback after submission.
 - End-of-session score and review.
+- Focused ELC question banks selected by URL, for example `?set=elc1`.
 - Performance breakdowns by topic, component, module LO, discipline and cognitive level.
 - Priority revision list based on missed components.
 - Selectable Notion summary for manual copy/paste into a Notion database.
 
+## Focused ELC banks
+
+The app uses one shared interface and multiple smaller question banks. Select a bank with the `set` query parameter:
+
+| Bank | URL parameter | Focus |
+|---|---|---|
+| ELC1 | `?set=elc1` | Endocrine foundations, pituitary, prolactin, GH, ADH, DI, SIADH and dynamic endocrine testing. |
+| ELC2 | `?set=elc2` | Thyroid, adrenal, calcium/PTH, insulin and diabetes. |
+| ELC3 | `?set=elc3` | Reproductive anatomy, physiology, puberty, gametogenesis, HPG/HPT axes, contraception, fertility and lactation. |
+| ELC4 | `?set=elc4` | Pregnancy, placenta, fetal growth, maternal adaptation, labour, PPH, neonatal transition and prematurity. |
+| ELC5 | `?set=elc5` | Amenorrhoea, PCOS, STI, gynaecological pathology, fertility, menopause, cancer, screening, ageing and communication. |
+| Mixed | `?set=mixed` | Mixed practice sampled from all available ELC banks. |
+
+Example GitHub Pages URLs:
+
+```text
+https://i-hashimi04.github.io/MCQ-add-on-for-notion/?set=elc1
+https://i-hashimi04.github.io/MCQ-add-on-for-notion/?set=elc2
+https://i-hashimi04.github.io/MCQ-add-on-for-notion/?set=elc3
+https://i-hashimi04.github.io/MCQ-add-on-for-notion/?set=elc4
+https://i-hashimi04.github.io/MCQ-add-on-for-notion/?set=elc5
+https://i-hashimi04.github.io/MCQ-add-on-for-notion/?set=mixed
+```
+
 ## Files
 
-- `index.html` contains the page structure.
+- `index.html` contains the shared page structure.
 - `style.css` controls the design.
-- `script.js` controls the quiz behaviour and result breakdowns.
-- `questions.js` contains the editable question bank.
+- `script.js` controls quiz behaviour, bank selection and result breakdowns.
+- `question-banks/elc1.js` to `question-banks/elc5.js` contain the focused ELC banks.
+- `questions.js` is the old single-bank file and is kept for reference.
+- `ELC_Paper_2_Assessment_Derived_Master_Blueprint.md` is the assessment-derived planning file. Add new questions only after they map to the blueprint.
 
 ## Editing questions
 
-Open `questions.js` and edit the `window.quizQuestions` array.
+Open the relevant file in `question-banks/` and edit the `questions` array inside `window.quizBanks.<bankId>`.
 
 Recommended metadata-rich format:
 
@@ -42,6 +69,8 @@ Recommended metadata-rich format:
   ],
   disciplines: ["pathology", "pharmacology", "clinical aspects"],
   cognitiveLevel: "apply",
+  assessmentSkill: "drug-safety",
+  variantType: "management",
   questionType: "single-best-answer",
   revisionAction: "Review Graves' disease treatment choices, especially PTU in the first trimester and radioactive iodine contraindication in pregnancy.",
   question: "A 27-year-old woman who is 9 weeks pregnant has weight loss, tremor and palpitations. Blood tests show suppressed TSH and raised free T4. Graves' disease is suspected.",
@@ -58,7 +87,7 @@ Recommended metadata-rich format:
 }
 ```
 
-The `answer` value uses zero-based numbering based on the order written in `questions.js`:
+The `answer` value uses zero-based numbering based on the order written in the question bank file:
 
 - `0` = first option
 - `1` = second option
@@ -81,6 +110,8 @@ The displayed order changes during practice, but the app still tracks the correc
 | `sessionLOs` | Session-level learning outcomes linked to the question. |
 | `disciplines` | Subject lenses tested, for example anatomy, physiology, pharmacology or clinical aspects. |
 | `cognitiveLevel` | Bloom-style level: `remember`, `understand`, `apply` or `analyse`. |
+| `assessmentSkill` | Main assessment direction, for example `mechanism`, `data-interpretation`, `management` or `drug-safety`. |
+| `variantType` | More specific variant family for planning and review. |
 | `questionType` | Currently `single-best-answer`. |
 | `revisionAction` | Action shown if the related component is missed. |
 | `question` | Clinical stem or question stem. |
@@ -106,7 +137,7 @@ https://i-hashimi04.github.io/MCQ-add-on-for-notion/
 
 ## Embedding in Notion
 
-1. Copy the GitHub Pages URL.
+1. Copy the GitHub Pages URL for the specific question bank, for example `https://i-hashimi04.github.io/MCQ-add-on-for-notion/?set=elc2`.
 2. Paste it into a Notion page.
 3. Choose **Embed**.
 4. Resize the embedded frame to fit the quiz.
