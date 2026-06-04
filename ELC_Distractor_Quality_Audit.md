@@ -38,7 +38,7 @@ Use these labels in bank metadata or review notes.
 
 | Bank | Current count | Current quality status | Notes |
 |---|---:|---|---|
-| ELC1 | 25 | distractor-review-needed | Wave 1 complete and topped up, but still needs full same-category distractor rewrite. |
+| ELC1 | 25 | exam-ready-pass-1 | Endocrine foundations, pituitary, prolactin/GH and ADH/DI/SIADH distractors rewritten to closer same-category alternatives. |
 | ELC2 | 27 | exam-ready-pass-1 | Endocrine, thyroid, adrenal, calcium and diabetes options rewritten to closer same-category alternatives. |
 | ELC3 | 25 | exam-ready-pass-1 | Anatomy and physiology distractors rewritten to same-region or same-mechanism alternatives. |
 | ELC4 | 25 | exam-ready-pass-1 | Pregnancy, labour, neonatal and drug-safety distractors rewritten to same-category alternatives. |
@@ -48,9 +48,9 @@ Use these labels in bank metadata or review notes.
 
 ## 4. Remaining rewrite priority
 
-1. ELC1 full distractor audit and option rewrite.
-2. Final spot-check of ELC2, ELC4, ELC5 and ELC3 for option-length clues and over-cued stems.
-3. Update any individual items from `exam-ready-pass-1` to final `exam-ready` only after spot-check.
+1. Final spot-check of all banks for option-length clues and over-cued stems.
+2. Update any individual items from `exam-ready-pass-1` to final `exam-ready` only after spot-check.
+3. Start Wave 2 expansion only after the spot-check is complete.
 
 ---
 
@@ -117,3 +117,5 @@ Reduce dose and check TSH only
 ## 6. Working principle for the next pass
 
 Do not create more questions until all existing Wave 1 banks have been rewritten from `coverage-draft` into at least `exam-ready-pass-1` question sets.
+
+Wave 1 distractor rewriting is now complete across ELC1–ELC5. The next pass should be a final spot-check for over-cued stems, option length imbalance and any remaining option-category drift.
