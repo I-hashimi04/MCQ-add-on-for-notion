@@ -62,7 +62,7 @@ Rules:
 - Include at least 4 management/drug-safety questions in ELC2, ELC4 and ELC5.
 - Include at least 4 anatomy/practical-localisation questions in ELC3.
 
-Expected total after Wave 1: 125 approved questions.
+Expected total after Wave 1: at least 125 approved questions.
 
 ### Wave 2 — Assessment-angle deepening
 
@@ -263,20 +263,22 @@ Update this table as banks are populated.
 
 | Bank | Current approved | Wave 1 target | Wave 2 target | Mature target | Next priority |
 |---|---:|---:|---:|---:|---|
-| ELC1 | 2 | 25 | 50 | 70 | Feedback loops, dynamic tests, DI/SIADH |
-| ELC2 | 2 | 25 | 60 | 80 | TFTs, adrenal data, calcium/PTH |
-| ELC3 | 1 | 25 | 60 | 80 | Anatomy/practical localisation, HPO axis |
-| ELC4 | 1 | 25 | 60 | 80 | Placenta/fetal growth, PPH, neonatal transition |
-| ELC5 | 0 | 25 | 60 | 80 | Amenorrhoea, STI, gynae pathology, screening |
+| ELC1 | 25 | 25 | 50 | 70 | Wave 2: more thyroid-adrenal cross-axis links and deeper dynamic-test variants |
+| ELC2 | 27 | 25 | 60 | 80 | Wave 2: more endocrine hypertension, thyroid pregnancy, calcium management, diabetes pregnancy |
+| ELC3 | 25 | 25 | 60 | 80 | Wave 2: more anatomy/practical localisation, menstrual hormone graphs, fertility/lactation |
+| ELC4 | 25 | 25 | 60 | 80 | Wave 2: infection in pregnancy, neonatal complications, antenatal screening, Doppler/data variants |
+| ELC5 | 25 | 25 | 60 | 80 | Wave 2: more STI treatment nuance, cervical screening results, gynae pathology, cancer treatment |
+
+Wave 1 is complete across all five focused banks. Mixed practice now samples from a broad approved pool across all ELC sections.
 
 ---
 
 ## 8. Recommended next build order
 
-1. ELC5 first to remove the empty-bank problem.
-2. ELC4 second because pregnancy/labour/neonatal material is highly integrative and likely under-practised.
-3. ELC2 third for high-yield data interpretation.
-4. ELC1 fourth to deepen axis logic and endocrine tests.
-5. ELC3 fifth to add anatomy/practical-style coverage.
+Wave 1 is complete. Recommended Wave 2 order:
 
-Reason: the current seed questions already give ELC1–ELC4 at least minimal functionality, while ELC5 is empty and needs immediate seeding.
+1. ELC4 — deepen pregnancy/labour/neonatal integration and data interpretation.
+2. ELC2 — deepen high-yield endocrine data interpretation and drug safety.
+3. ELC5 — deepen pathology, STI, screening and cancer treatment variants.
+4. ELC1 — expand cross-axis and dynamic testing variants.
+5. ELC3 — expand practical-style anatomy and physiology graph variants.
