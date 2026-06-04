@@ -28,7 +28,8 @@ Use these labels in bank metadata or review notes.
 |---|---|
 | `coverage-draft` | Content is mapped, but distractors may be weak. Good for checking coverage only. |
 | `distractor-review-needed` | Question is probably useful but needs option rewrite before serious practice. |
-| `exam-ready` | Same-category plausible options, clear cover-test lead-in, no obvious distractor flaw. |
+| `exam-ready-pass-1` | First same-category distractor rewrite completed. Still worth future peer review. |
+| `exam-ready` | Same-category plausible options, clear cover-test lead-in, no obvious distractor flaw after final review. |
 | `reject` | Question should be removed or fully rewritten. |
 
 ---
@@ -37,21 +38,19 @@ Use these labels in bank metadata or review notes.
 
 | Bank | Current count | Current quality status | Notes |
 |---|---:|---|---|
-| ELC1 | 25 | partial exam-ready pass started | ELC1 has been topped up and some options are improved, but it still needs a full line-by-line distractor audit before being counted as fully exam-ready. |
-| ELC2 | 27 | distractor-review-needed | Many questions have coverage value but several option sets still include unrelated distractors. |
-| ELC3 | 25 | distractor-review-needed | Anatomy coverage is broad, but distractors often cross unrelated anatomical systems. |
-| ELC4 | 25 | distractor-review-needed | Pregnancy/neonatal coverage is good, but some options are too obviously unrelated. |
-| ELC5 | 25 | distractor-review-needed | Good topic coverage, but some options mix unrelated diagnoses, investigations and mechanisms. |
+| ELC1 | 25 | distractor-review-needed | Wave 1 complete and topped up, but still needs full same-category distractor rewrite. |
+| ELC2 | 27 | exam-ready-pass-1 | Endocrine, thyroid, adrenal, calcium and diabetes options rewritten to closer same-category alternatives. |
+| ELC3 | 25 | exam-ready-pass-1 | Anatomy and physiology distractors rewritten to same-region or same-mechanism alternatives. |
+| ELC4 | 25 | exam-ready-pass-1 | Pregnancy, labour, neonatal and drug-safety distractors rewritten to same-category alternatives. |
+| ELC5 | 25 | exam-ready-pass-1 | STI, gynae pathology, screening, cancer and communication distractors rewritten to same-category alternatives. |
 
 ---
 
-## 4. Rewrite priority
+## 4. Remaining rewrite priority
 
 1. ELC1 full distractor audit and option rewrite.
-2. ELC2, because endocrine data interpretation benefits most from close distractors.
-3. ELC4, because pregnancy/labour/neonatal management questions need plausible safety distractors.
-4. ELC5, because STI/gynae/cancer questions need same-category clinical alternatives.
-5. ELC3, because anatomy questions need same-region or same-structure-family distractors.
+2. Final spot-check of ELC2, ELC4, ELC5 and ELC3 for option-length clues and over-cued stems.
+3. Update any individual items from `exam-ready-pass-1` to final `exam-ready` only after spot-check.
 
 ---
 
@@ -117,4 +116,4 @@ Reduce dose and check TSH only
 
 ## 6. Working principle for the next pass
 
-Do not create more questions until the existing Wave 1 banks have been rewritten from `coverage-draft` into `exam-ready` question sets.
+Do not create more questions until all existing Wave 1 banks have been rewritten from `coverage-draft` into at least `exam-ready-pass-1` question sets.
