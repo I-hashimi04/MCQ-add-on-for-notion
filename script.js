@@ -61,6 +61,7 @@ const nextButton = document.querySelector("#next-button");
 const restartButton = document.querySelector("#restart-button");
 const tryAgainButton = document.querySelector("#try-again-button");
 const copySummaryButton = document.querySelector("#copy-summary-button");
+const mainMenuButtons = document.querySelectorAll("[data-main-menu]");
 
 const liveScore = document.querySelector("#live-score");
 const questionTotal = document.querySelector("#question-total");
@@ -105,6 +106,7 @@ function initialise() {
   restartButton.addEventListener("click", restartQuiz);
   tryAgainButton.addEventListener("click", restartQuiz);
   copySummaryButton.addEventListener("click", selectNotionSummary);
+  mainMenuButtons.forEach((button) => button.addEventListener("click", showMainMenu));
 
   if (sourceQuestions.length === 0) {
     startButton.disabled = true;
@@ -358,6 +360,29 @@ function showResults() {
       <p class="muted">Component: ${escapeHtml(attempt.component)} · Cognitive level: ${escapeHtml(attempt.cognitiveLevel)} · Skill: ${escapeHtml(attempt.assessmentSkill)}</p>
     </article>
   `).join("");
+}
+
+function showMainMenu() {
+  currentIndex = 0;
+  selectedIndex = null;
+  score = 0;
+  hasSubmitted = false;
+  attempts = [];
+  optionStates = [];
+  sessionQuestions = [];
+
+  liveScore.textContent = "0";
+  progressFill.style.width = "0%";
+  options.innerHTML = "";
+  feedback.innerHTML = "";
+  feedback.classList.add("hidden");
+  reviewList.innerHTML = "";
+  notionSummaryText.value = "";
+
+  quizScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  startScreen.classList.remove("hidden");
+  startScreen.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function buildAllBreakdowns(items) {
